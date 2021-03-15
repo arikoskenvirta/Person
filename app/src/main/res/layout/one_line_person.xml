@@ -8,11 +8,12 @@
 
     <ImageView
         android:id="@+id/iw_personPicture"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="197dp"
+        android:layout_height="195dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:contentDescription="Picture"
+        android:cropToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -24,6 +25,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Name"
+        android:textSize="30sp"
         app:layout_constraintStart_toEndOf="@+id/iw_personPicture"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/iw_personPicture"
         app:layout_constraintStart_toEndOf="@+id/iw_personPicture" />
 

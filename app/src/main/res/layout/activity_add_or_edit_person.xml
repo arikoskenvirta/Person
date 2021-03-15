@@ -14,6 +14,7 @@
         android:layout_marginTop="8dp"
         android:text="Id:"
         android:textSize="30sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,11 +22,11 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:text="Name:"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_save"
+        tools:layout_editor_absoluteX="16dp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -57,6 +58,7 @@
         android:inputType="text"
         android:text="0"
         android:textSize="30sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
@@ -84,14 +86,14 @@
 
     <EditText
         android:id="@+id/et_pictureURL"
-        android:layout_width="373dp"
-        android:layout_height="46dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="picture URL"
-        android:inputType="text"
+        android:inputType="textMultiLine|text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -100,31 +102,27 @@
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
         android:text="Save"
-        app:layout_constraintTop_toBottomOf="@+id/et_pictureURL"
-        tools:layout_editor_absoluteX="56dp" />
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" />
 
     <Button
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="8dp"
         android:text="Cancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_delete" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_delete"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/btn_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
         android:insetTop="6dp"
         android:insetBottom="6dp"
         android:text="Delete"
-        app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
-        app:layout_constraintHorizontal_bias="0.025"
-        app:layout_constraintStart_toEndOf="@+id/btn_save"
-        app:layout_constraintTop_toTopOf="@+id/btn_save" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_save"
+        app:layout_constraintStart_toEndOf="@+id/btn_save" />
 </androidx.constraintlayout.widget.ConstraintLayout>
