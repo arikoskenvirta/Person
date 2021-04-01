@@ -169,11 +169,9 @@ public class AddOrEditPerson extends AppCompatActivity {
             imageURi = data.getData();
             iw_profilePicture.setImageURI(imageURi);
 
-            String filename = imageURi.getLastPathSegment();
-            filename = filename.substring(filename.lastIndexOf("/")+1);
-
+            String filename = et_name.getText().toString();
             uploadPicture(filename);
-            et_profilePicture.setText(filename);
+
             
             
         }
@@ -200,6 +198,7 @@ public class AddOrEditPerson extends AppCompatActivity {
                             public void onSuccess(Uri uri) {
 
                                 String url = uri.toString();
+                                et_profilePicture.setText(url);
                                 //update to profile url field
 
                             }

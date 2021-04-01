@@ -17,6 +17,7 @@
         android:cropToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mountain"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView

@@ -17,17 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.io.File;
-import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,22 +42,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+        Query query = db.collection("persons");
 
         mFirestoreRecyclerView = findViewById(R.id.rl_recyclerList);
-
-        Query query = db.collection("persons");
 
         //rl_recyclerList options
         FirestoreRecyclerOptions<Person> options = new FirestoreRecyclerOptions.Builder<Person>()
                 .setQuery(query, Person.class)
                 .build();
 
-
-
         //adapter
-
-
         adapter = new FirestoreRecyclerAdapter<Person, PersonViewHolder>(options) {
             @NonNull
             @Override
@@ -79,9 +66,14 @@ public class MainActivity extends AppCompatActivity {
 
                 holder.tv_name.setText(model.getName());
                 //holder.tv_age.setText(String.valueOf(model.getAge()));
+                Glide.with(MainActivity.this).load(
+                        model.getProfilePicture().toString()
+                )
+                        .into(holder.iw_profilePicture);
 
-
-                storageReference = FirebaseStorage.getInstance().getReference().child("ProfilePicture/" + model.getProfilePicture() );
+                //                //        "https://firebasestorage.googleapis.com/v0/b/recyclerlist-f7b76.appspot.com/o/ProfilePictures%2FSARI?alt=media&token=49f7cc71-a626-4cab-84d6-abc869e1ad58"
+                /*
+                storageReference = FirebaseStorage.getInstance().getReference().child("ProfilePicture/" + model.getName() );
 
                 try {
                     final File localFile = File.createTempFile("test", ".jpg");
@@ -91,8 +83,32 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                            //Glide.with(MainActivity.this).load(localFile).into(holder.iw_profilePicture);
-                            Glide.with(MainActivity.this).load(localFile.getAbsoluteFile()).into(holder.iw_profilePicture);
+                            Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                            firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+
+                                    String url = uri.toString();
+                                    Glide.with(MainActivity.this).load(url).into(holder.iw_profilePicture);
+                                    //
+                                    //update to profile url field
+
+                                }
+                            });
+
+
+
+                            //Bitmap bitmap = BitmapFactory.decodeFile(model.getProfilePicture());
+                            //((ImageView) findViewById(R.id.iw_profilePicture)).setImageBitmap(bitmap);
+                            //((de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.iw_personPicture)).setImageBitmap(bitmap);
+
+
+                            //holder.iw_personPicture2.setImageResource();
+
+
+                            Glide.with(MainActivity.this).load(model.getProfilePicture()).into(holder.iw_profilePicture);
+                            //Glide.with(MainActivity.this).load(model.getProfilePicture()).into(findViewById(R.id.iw_profilePicture)));
+                            //Glide.with(MainActivity.this).load(localFile.getAbsoluteFile())
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -105,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+
+                 */
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -132,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //recyclerView = findViewById(R.id.lv_presidentList);
         mFirestoreRecyclerView.setHasFixedSize(true);
         mFirestoreRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mFirestoreRecyclerView.setAdapter(adapter);
@@ -152,9 +169,6 @@ public class MainActivity extends AppCompatActivity {
             tv_name = itemView.findViewById(R.id.tv_name);
             //tv_age = itemView.findViewById(R.id.tv_age);
             iw_profilePicture = itemView.findViewById(R.id.iw_profilePicture);
-
-
-
         }
 
         @Override
