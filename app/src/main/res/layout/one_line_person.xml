@@ -6,11 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
     <ImageView
-        android:id="@+id/iw_personPicture"
-        android:layout_width="197dp"
-        android:layout_height="195dp"
-        android:layout_marginStart="8dp"
+        android:id="@+id/iw_profilePicture"
+        android:layout_width="107dp"
+        android:layout_height="117dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:contentDescription="Picture"
         android:cropToPadding="false"
@@ -22,30 +23,12 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="Name"
         android:textSize="30sp"
-        app:layout_constraintStart_toEndOf="@+id/iw_personPicture"
+        app:layout_constraintStart_toEndOf="@+id/iw_profilePicture"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_age"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iw_personPicture"
-        app:layout_constraintStart_toEndOf="@+id/iw_personPicture" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="24dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@+id/iw_personPicture"
-        tools:layout_editor_absoluteX="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

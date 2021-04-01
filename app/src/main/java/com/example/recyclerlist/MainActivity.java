@@ -17,10 +17,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private RecyclerView mFirestoreRecyclerView;
     private FirestoreRecyclerAdapter adapter;
+
+    private ImageView iw_profilePicture;
 
     Button btn_addNew;
 
@@ -41,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
         mFirestoreRecyclerView = findViewById(R.id.rl_recyclerList);
 
         Query query = db.collection("persons");
@@ -49,7 +59,12 @@ public class MainActivity extends AppCompatActivity {
         FirestoreRecyclerOptions<Person> options = new FirestoreRecyclerOptions.Builder<Person>()
                 .setQuery(query, Person.class)
                 .build();
+
+
+
         //adapter
+
+
         adapter = new FirestoreRecyclerAdapter<Person, PersonViewHolder>(options) {
             @NonNull
             @Override
@@ -60,9 +75,35 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(@NonNull PersonViewHolder holder, int position, @NonNull Person model) {
+                StorageReference storageReference;
+
                 holder.tv_name.setText(model.getName());
-                holder.tv_age.setText(String.valueOf(model.getAge()));
-                Glide.with(MainActivity.this).load(model.getImageURL()).into(holder.iw_personPicture);
+                //holder.tv_age.setText(String.valueOf(model.getAge()));
+
+
+                storageReference = FirebaseStorage.getInstance().getReference().child("ProfilePicture/" + model.getProfilePicture() );
+
+                try {
+                    final File localFile = File.createTempFile("test", ".jpg");
+
+                    storageReference.getFile(localFile )
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                            //Glide.with(MainActivity.this).load(localFile).into(holder.iw_profilePicture);
+                            Glide.with(MainActivity.this).load(localFile.getAbsoluteFile()).into(holder.iw_profilePicture);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -103,13 +144,15 @@ public class MainActivity extends AppCompatActivity {
     private class PersonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView tv_name;
         private TextView tv_age;
-        private ImageView iw_personPicture;
+        private ImageView iw_profilePicture;
+        private de.hdodenhof.circleimageview.CircleImageView iw_personPicture2;
 
         public PersonViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name);
-            tv_age = itemView.findViewById(R.id.tv_age);
-            iw_personPicture = itemView.findViewById(R.id.iw_personPicture);
+            //tv_age = itemView.findViewById(R.id.tv_age);
+            iw_profilePicture = itemView.findViewById(R.id.iw_profilePicture);
+
 
 
         }

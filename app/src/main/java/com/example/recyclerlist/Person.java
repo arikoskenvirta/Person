@@ -5,15 +5,15 @@ public class Person {
     private String id;
     private String name;
     private int age;
-    private String imageurl;
+    private String profilePicture;
 
     public Person() {    }
 
-    public Person( String id, String name, int age, String imageurl) {
+    public Person( String id, String name, int age, String profilePicture) {
         this.id = id;
         this.name = name;
         this.age = age;
-        this.imageurl = imageurl;
+        this.profilePicture = profilePicture;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class Person {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
-                ", imageurl='" + imageurl + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
                 '}';
     }
 
@@ -46,11 +46,13 @@ public class Person {
         this.age = age;
     }
 
-    public String getImageURL() {
-        return imageurl;
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setImageURL(String imageurl) {
-        this.imageurl = imageurl;
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
+
+
 }
