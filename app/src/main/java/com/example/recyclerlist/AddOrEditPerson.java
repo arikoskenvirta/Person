@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -52,12 +53,17 @@ public class AddOrEditPerson extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
+    public ProgressBar pb;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_or_edit_person);
+        pb = (ProgressBar)findViewById(R.id.progress_bar);
+
+
 
         et_name = findViewById(R.id.et_name);
         et_age =  findViewById(R.id.et_age);
@@ -82,7 +88,8 @@ public class AddOrEditPerson extends AppCompatActivity {
         if ( id != null) {
 
             DocumentReference docRef = db.collection("persons").document(id);
-            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            docRef.get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     Person person = documentSnapshot.toObject(Person.class);
@@ -91,6 +98,14 @@ public class AddOrEditPerson extends AppCompatActivity {
                     et_age.setText(String.valueOf(person.getAge()));
                     et_profilePicture.setText(person.getProfilePicture());
                     tv_id.setText(person.getId());
+
+                    Glide
+                            .with(getApplicationContext())
+                            .load(person.getProfilePicture().toString())
+                            .into(iw_profilePicture);
+
+                    pb.setVisibility(View.INVISIBLE);
+
 
                 }
             });
@@ -180,11 +195,10 @@ public class AddOrEditPerson extends AppCompatActivity {
 
     private void uploadPicture(String filename) {
 
-        ProgressBar pb;
+        //ProgressBar pb;
 
         StorageReference storageRef = storageReference.child("ProfilePictures/"+ filename );
 
-        pb = (ProgressBar)findViewById(R.id.progress_bar);
 
         storageRef.putFile(imageURi)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -199,7 +213,6 @@ public class AddOrEditPerson extends AppCompatActivity {
 
                                 String url = uri.toString();
                                 et_profilePicture.setText(url);
-                                //update to profile url field
 
                             }
                         });

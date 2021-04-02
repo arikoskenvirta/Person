@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddOrEditPerson">
+    tools:context=".AddOrEditPerson"
+    android:background="@color/teal_200"
+    >
 
     <TextView
         android:id="@+id/textView"
@@ -49,10 +51,9 @@
         android:layout_marginTop="8dp"
         android:text="Picture URL:"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
         android:visibility="invisible"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/tv_id"
@@ -98,47 +99,48 @@
         android:ems="10"
         android:hint="picture URL"
         android:inputType="textMultiLine|text"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        android:visibility="invisible"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 
     <ImageView
         android:id="@+id/iw_profilePicture"
         android:layout_width="342dp"
         android:layout_height="321dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="24dp"
-        android:background="@color/purple_500"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:adjustViewBounds="true"
         android:contentDescription="Picture"
         android:cropToPadding="false"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.653"
+        app:layout_constraintTop_toBottomOf="@+id/et_age"
         app:srcCompat="@drawable/mountain"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <!--style="@style/CircularDeterminateProgressBar"
+    android:progressDrawable="@drawable/circle"
+    -->
+
     <ProgressBar
         android:id="@+id/progress_bar"
-        style="@style/CircularDeterminateProgressBar"
-        android:layout_width="97dp"
-        android:layout_height="89dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="333dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:indeterminateOnly="false"
-        android:progressDrawable="@drawable/circle"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.385"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953"
+        app:layout_constraintTop_toBottomOf="@+id/iw_profilePicture"
         tools:progress="60" />
 
     <TextView
@@ -146,11 +148,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
-        app:layout_constraintEnd_toEndOf="@+id/progress_bar"
-        app:layout_constraintStart_toStartOf="@+id/progress_bar"
-        app:layout_constraintTop_toTopOf="@+id/progress_bar"
-        tools:text="60%" />
+        tools:layout_editor_absoluteX="189dp"
+        tools:layout_editor_absoluteY="642dp"
+        tools:text="60%"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/btn_save"

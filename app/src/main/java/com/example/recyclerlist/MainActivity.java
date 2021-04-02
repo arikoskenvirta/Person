@@ -3,9 +3,11 @@ package com.example.recyclerlist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,13 +35,33 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView iw_profilePicture;
 
-    Button btn_addNew;
+    //Button btn_addNew;
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.rl_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, AddOrEditPerson.class);
+        startActivity(intent);
+
+        return true;
+    }
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Query query = db.collection("persons");
@@ -65,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 StorageReference storageReference;
 
                 holder.tv_name.setText(model.getName());
-                //holder.tv_age.setText(String.valueOf(model.getAge()));
+                holder.tv_age.setText(String.valueOf(model.getAge()));
                 Glide.with(MainActivity.this).load(
                         model.getProfilePicture().toString()
                 )
@@ -141,15 +163,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        btn_addNew = findViewById(R.id.btn_addNew);
-        btn_addNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddOrEditPerson.class);
-                startActivity(intent);
-            }
-        });
-
         mFirestoreRecyclerView.setHasFixedSize(true);
         mFirestoreRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mFirestoreRecyclerView.setAdapter(adapter);
@@ -167,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         public PersonViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name);
-            //tv_age = itemView.findViewById(R.id.tv_age);
+            tv_age = itemView.findViewById(R.id.tv_age);
             iw_profilePicture = itemView.findViewById(R.id.iw_profilePicture);
         }
 
