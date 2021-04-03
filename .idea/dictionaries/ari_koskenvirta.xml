@@ -2,6 +2,7 @@
   <dictionary name="ari.koskenvirta">
     <words>
       <w>addpersondata</w>
+      <w>firestore</w>
       <w>imageurl</w>
       <w>tasksnapshot</w>
       <w>updatepersondata</w>
