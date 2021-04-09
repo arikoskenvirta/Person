@@ -4,6 +4,7 @@
       <w>addpersondata</w>
       <w>firestore</w>
       <w>imageurl</w>
+      <w>phonenumber</w>
       <w>tasksnapshot</w>
       <w>updatepersondata</w>
     </words>

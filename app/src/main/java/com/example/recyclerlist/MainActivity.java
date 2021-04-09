@@ -19,38 +19,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.recyclerlist.databinding.ActivityMainBinding;
 import com.example.recyclerlist.databinding.OneLinePersonBinding;
+import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.StorageReference;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
 
     private static final String TAG = "Main";
-
     private FirebaseFirestore firebaseFirestore;
-    private FirestoreRecyclerAdapter adapter;
-    //private ImageView iw_profilePicture;
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.rl_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Intent intent = new Intent(MainActivity.this, AddOrEditPerson.class);
-        startActivity(intent);
-
-        return true;
-    }
-
+    FirestoreRecyclerAdapter firestoreRecyclerAdapter;
     private ActivityMainBinding activityMainBinding;
 
     @Override
@@ -72,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         //adapter
-        adapter = new FirestoreRecyclerAdapter<Person, PersonViewHolder>(options) {
+        firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<Person, PersonViewHolder>(options) {
+
             @NonNull
             @Override
             public PersonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -86,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 StorageReference storageReference;
 
                 holder.tv_name.setText(model.getName());
-                holder.tv_age.setText(String.valueOf(model.getAge()));
+                holder.tv_phoneNumber.setText(model.getPhoneNumber());
                 Glide.with(MainActivity.this).load(
                         model.getProfilePicture().toString()
                 )
@@ -112,14 +96,14 @@ public class MainActivity extends AppCompatActivity {
 
         mFirestoreRecyclerView.setHasFixedSize(true);
         mFirestoreRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mFirestoreRecyclerView.setAdapter(adapter);
+        mFirestoreRecyclerView.setAdapter(firestoreRecyclerAdapter);
 
     }
 
 
     private class PersonViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_name;
-        private TextView tv_age;
+        private TextView tv_phoneNumber;
         private ImageView iw_profilePicture;
         private de.hdodenhof.circleimageview.CircleImageView iw_personPicture2;
 
@@ -130,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             this.oneLinePersonBinding = oneLinePersonBinding;
 
             tv_name = oneLinePersonBinding.tvName;
-            tv_age = oneLinePersonBinding.tvAge;
+            tv_phoneNumber = oneLinePersonBinding.tvPhoneNumber;
             iw_profilePicture = oneLinePersonBinding.iwProfilePicture;
 
             this.oneLinePersonBinding.imageElasticView.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     //StorageReference storageReference;
 
                     DocumentSnapshot snapshot;
-                    snapshot = (DocumentSnapshot) adapter.getSnapshots().getSnapshot(getAdapterPosition());
+                    snapshot = (DocumentSnapshot) firestoreRecyclerAdapter.getSnapshots().getSnapshot(getAdapterPosition());
                     String uid = snapshot.getId();
 
                     Intent intent = new Intent(MainActivity.this, AddOrEditPerson.class);
@@ -152,16 +136,71 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void  onStop(){
-        super.onStop();
-        adapter.stopListening();
-    }
+
+
 
     @Override
     protected void  onStart(){
         super.onStart();
-        adapter.startListening();
+        FirebaseAuth.getInstance().addAuthStateListener(this);
+        firestoreRecyclerAdapter.startListening();
     }
+
+    @Override
+    protected void  onStop(){
+        super.onStop();
+        FirebaseAuth.getInstance().removeAuthStateListener(this);
+
+        if (firestoreRecyclerAdapter != null) {
+            firestoreRecyclerAdapter.stopListening();
+        }
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        if (firebaseAuth.getCurrentUser() == null) {
+            startLoginActivity();
+            return;
+        }
+
+        //initRecyclerView(firebaseAuth.getCurrentUser());
+    }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(this, LoginRegisterActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.rl_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_logout:
+                AuthUI.getInstance().signOut(this);
+                startLoginActivity();
+                finish();
+                return true;
+            /*case R.id.action_profile:
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                return true;*/
+        }
+
+        Intent intent = new Intent(MainActivity.this, AddOrEditPerson.class);
+        startActivity(intent);
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
 
 }

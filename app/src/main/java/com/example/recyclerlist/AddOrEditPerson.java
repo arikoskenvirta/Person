@@ -38,7 +38,7 @@ public class AddOrEditPerson extends AppCompatActivity {
     private static final String TAG = "Edit";
 
     Button btn_ok, btn_cancel, btn_delete;
-    EditText et_name, et_age, et_profilePicture;
+    EditText et_name, et_phoneNumber, et_profilePicture;
     TextView tv_id;
 
     String id;
@@ -66,7 +66,7 @@ public class AddOrEditPerson extends AppCompatActivity {
 
 
         et_name = findViewById(R.id.et_name);
-        et_age =  findViewById(R.id.et_age);
+        et_phoneNumber =  findViewById(R.id.et_phoneNumber);
         et_profilePicture =  findViewById(R.id.et_profilePicture);
         tv_id =  findViewById(R.id.tv_id);
         iw_profilePicture =  findViewById(R.id.iw_profilePicture);
@@ -95,7 +95,7 @@ public class AddOrEditPerson extends AppCompatActivity {
                     Person person = documentSnapshot.toObject(Person.class);
 
                     et_name.setText(person.getName());
-                    et_age.setText(String.valueOf(person.getAge()));
+                    et_phoneNumber.setText(String.valueOf(person.getPhoneNumber()));
                     et_profilePicture.setText(person.getProfilePicture());
                     tv_id.setText(person.getId());
 
@@ -119,7 +119,7 @@ public class AddOrEditPerson extends AppCompatActivity {
 
                 Map<String, Object> person = new HashMap<>();
                 person.put("name", et_name.getText().toString());
-                person.put("age", Integer.parseInt(et_age.getText().toString()));
+                person.put("phoneNumber", et_phoneNumber.getText().toString());
                 person.put("profilePicture", et_profilePicture.getText().toString());
 
                 updatepersondata ( person, id);

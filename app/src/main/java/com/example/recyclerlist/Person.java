@@ -6,14 +6,16 @@ public class Person {
     private String name;
     private int age;
     private String profilePicture;
+    private String phoneNumber;
 
     public Person() {    }
 
-    public Person( String id, String name, int age, String profilePicture) {
+    public Person(String id, String name, int age, String profilePicture, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.profilePicture = profilePicture;
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
@@ -23,6 +25,7 @@ public class Person {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", profilePicture='" + profilePicture + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 
@@ -54,5 +57,14 @@ public class Person {
         this.profilePicture = profilePicture;
     }
 
+    public String getPhoneNumber() {
+        if (phoneNumber == null) {
+            phoneNumber = "";
+        }
+        return phoneNumber;
+    }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }
